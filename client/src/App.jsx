@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
+const apiBaseUrl = import.meta.env.VITE_API_URL || ''
+
 const companies = [
   { name: 'Microsoft', mark: 'M', color: '#2563eb' },
   { name: 'Google', mark: 'G', color: '#ea4335' },
@@ -73,7 +75,7 @@ function App() {
   const [toast, setToast] = useState(null)
 
   useEffect(() => {
-    fetch('/api/registrations')
+    fetch(`${apiBaseUrl}/api/registrations`)
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load registrations')
         return response.json()
@@ -105,7 +107,7 @@ function App() {
     if (selectedCompanies.length !== 4) return
     const registration = { ...form, companies: selectedCompanies, submittedAt: new Date().toISOString() }
     try {
-      const response = await fetch('/api/registrations', {
+      const response = await fetch(`${apiBaseUrl}/api/registrations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registration),
